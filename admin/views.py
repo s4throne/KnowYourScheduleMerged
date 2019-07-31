@@ -20,7 +20,7 @@ def admin(request):
 
 
 def adminEdit(request):
-    adminEditor = loader.get_template('../UI/AdminEdit.html')
+    adminEditor = loader.get_template('../UI/editschedule.html')
     return HttpResponse(adminEditor.render())
 
 

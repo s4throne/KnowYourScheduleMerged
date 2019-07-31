@@ -36,7 +36,7 @@ def signin(request):
             else:
                 request.session["login_user"] = user
                 context["success_msg"] = "Login successful."
-                return redirect("/account/admindash/")
+                return redirect("/account/admindash/index/")
     return HttpResponse(signup_html_page.render(context, request))
 
 def about(request):
