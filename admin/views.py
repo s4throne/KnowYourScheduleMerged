@@ -26,7 +26,7 @@ def admin(request):
 
 
 def adminEdit(request):
-    adminEditor = loader.get_template('../UI/editschedule.html')
+    adminEditor = loader.get_template('../UI/addschedule.html')
     return HttpResponse(adminEditor.render())
 
 
