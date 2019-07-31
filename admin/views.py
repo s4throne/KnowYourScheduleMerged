@@ -1,4 +1,6 @@
+import datetime
 import traceback
+from time import time
 
 from django.shortcuts import render
 from django.shortcuts import render, redirect
@@ -6,6 +8,7 @@ from django.http import HttpResponse
 from django.template import loader
 
 # Create your views here.
+from model.schedule import Schedule
 from model.teacher import Teacher
 from repo.subject_repo import SubjectRepo
 from repo.user_repo import UserRepo
@@ -40,7 +43,33 @@ def adminSchedule(request):
     subject = request.POST["subject"]
     day = request.POST["day"]
     classno = request.POST["classno"]
-    time = request.POST["time"]
+    fulltime = request.POST["time"]
+    schedule = Schedule()
+    schedule.subject=subject
+    schedule.faculty = faculty
+    schedule.class_no = classno
+    schedule.day_no = day
+    if fulltime=="11":
+        schedule.start_time = datetime.time(11,0,0)
+        schedule.end_time = datetime.time(12,0,0)
+    elif fulltime=="12":
+        schedule.start_time = datetime.time(12,0,0)
+        schedule.end_time = datetime.time(1,0,0)
+    elif fulltime=="1":
+        schedule.start_time = datetime.time(1,0,0)
+        schedule.end_time = datetime.time(2,0,0)
+    elif fulltime=="2.5":
+        schedule.start_time = datetime.time(2,30,0)
+        schedule.end_time = datetime.time(3,30,0)
+    elif fulltime=="3.5":
+        schedule.start_time = datetime.time(3,30,0)
+        schedule.end_time = datetime.time(4,30,0)
+    subjectRepo = SubjectRepo()
+    schedule.subject_id=subjectRepo.get_subjectid(faculty, subject)
+    if schedule.subject_id is None:
+        context["error_msg"] = "Subject didn't matched the faculty"
+
+    return HttpResponse(adminScheduler.render(context,request))
 
 
 def adminAdd(request):

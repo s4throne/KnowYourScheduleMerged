@@ -23,3 +23,18 @@ class SubjectRepo(object):
             traceback.print_exc()
             return None
 
+    def get_subjectid(self, faculty, subject):
+        query = "SELECT subject_id FROM subject WHERE faculty=%s AND subject_name=%s"
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query,[faculty,subject])
+                row = cursor.fetchall()
+                if row is None:
+                    return None
+                else:
+                    return row[0]
+        except Exception as e:
+            traceback.print_exc()
+            return None
+
+
