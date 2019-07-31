@@ -1,0 +1,30 @@
+.logo-login {
+  max-width: 300px;
+}
+
+.logo-nav {
+  max-width: 80px;
+  display: inline-block;
+  margin-left: -30px;
+  margin-right: -10px;
+  margin-top: -10px;
+}
+
+.login-clean {
+  /*background-image: url("../../assets/img/wall.png?h=321ad5076ce71fd8de91fad3664e3851");*/
+  /*opacity: 0.8;*/
+}
+
+.features-clean {
+  position: relative;
+}
+
+.div-back {
+  /*position: absolute;*/
+  /*z-index: -1;*/
+  background-image: url(../../assets/img/wall.png?h=321ad5076ce71fd8de91fad3664e3851);
+  height: inherit;
+  width: inherit;
+  opacity: 0.9;
+}
+
