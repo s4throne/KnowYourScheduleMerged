@@ -15,7 +15,7 @@ class AccountService(Service):
                 return None
             else:
                 if password_verify(password, user_detail["password"]):
-                    return user_detail["teacher"]
+                    return user_detail["user"]
                 else:
                     return None
         except Exception:

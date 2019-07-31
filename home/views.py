@@ -1,8 +1,14 @@
-from django.shortcuts import render, redirect
+import traceback
+
+from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
-from django.template import loader
+from django.template import loader, RequestContext
 
 # Create your views here.
+from django.template.context_processors import csrf
+
+from model.teacher import Teacher
+from repo.user_repo import UserRepo
 from service.account_service import AccountService
 from service.forum_service import ForumService
 from utils import password_hash
@@ -17,7 +23,8 @@ def index(request):
 
 def newuser(request):
     index_html_page = loader.get_template('../ui/newuser.html')
-    return HttpResponse(index_html_page.render())
+    context = {}
+    return HttpResponse(index_html_page.render(context,request))
 
 def signin(request):
     signup_html_page = loader.get_template('../ui/index.html')
@@ -38,6 +45,39 @@ def signin(request):
                 context["success_msg"] = "Login successful."
                 return redirect("/account/admindash/index/")
     return HttpResponse(signup_html_page.render(context, request))
+
+
+def register(request):
+    signup_html_page = loader.get_template('../ui/newuser.html')
+    # contexter = RequestContext(request)
+    context = {}
+    if request.method == 'POST':
+        email = request.POST["email"]
+        confirmation = request.POST["confirmation"]
+        password =  request.POST["password"]
+        cpassword = request.POST["cpassword"]
+        user = Teacher()
+        user.email = email
+        if not email:
+            context["error_msg"] = "Invalid email."
+        elif not password or len(str(password).strip(' ')) <= 7:
+            context["error_msg"] = "Password must be 8 character long."
+        elif not cpassword or cpassword != password:
+            context["error_msg"] = "Password don't match."
+        else:
+            try:
+                use_repo = UserRepo()
+                if use_repo.register(user, confirmation, password_hash(password)):
+                    request.session["login_user"] = user
+                    context["success_msg"] = "Your account is verified"
+                    return redirect("/account/admindash/index/")
+            except Exception:
+                traceback.print_exc()
+                context["error_msg"] = "Something went wrong"
+    return HttpResponse(signup_html_page.render(context,request))
+        # context.update(csrf(register()))
+    # return render_to_response('../ui/newuser.html',context, contexter)
+
 
 def about(request):
     return HttpResponse("This is about page.")

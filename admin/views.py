@@ -39,10 +39,15 @@ def adminAddSubmit(request):
     context = {}
     if request.method == 'GET':
         fname = request.GET["txtName"]
+
+        fullname = fname.split(" ")
+        if len(fullname)!=2:
+            context["error_msg"] = "Full Name Required"
+            return HttpResponse(adminAddView.render(context, request))
         email = request.GET["txtEmail"]
         user = Teacher()
-        user.first_name = fname
-        user.last_name = "whatever"
+        user.first_name = fullname[0]
+        user.last_name = fullname[1]
         user.email = email
         confirmation = generate_uuid()
         time = timestamp()
@@ -55,7 +60,7 @@ def adminAddSubmit(request):
             try:
                 use_repo = UserRepo()
                 if use_repo.save(user, confirmation, time):
-                    context["success_msg"] = "Teacher Added"
+                    context["success_msg"] = "Teacher Added, Confirmation Code is "+confirmation
             except Exception:
                 traceback.print_exc()
                 context["error_msg"] = "Something went wrong"

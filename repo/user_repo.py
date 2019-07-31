@@ -27,7 +27,7 @@ class UserRepo(object):
             return None
 
     def save(self, user, confirmation, time):
-        query = "INSERT INTO teacher (first_name, last_name, email, confirm_code, confirmed added_at) VALUES(%s,%s,%s,%s,%s)"
+        query = "INSERT INTO teacher (first_name, last_name, email, confirm_code, confirmed, added_at) VALUES(%s,%s,%s,%s,%s,%s)"
         try:
             with connection.cursor() as cursor:
                 cursor.execute(query, [user.first_name, user.last_name, user.email, confirmation, False, time])
@@ -35,3 +35,21 @@ class UserRepo(object):
         except Exception:
             traceback.print_exc()
             return False
+
+    def register(self, user, confirmation, password):
+        query = "SELECT COUNT(*) FROM teacher WHERE email=? AND confirm_code = ?"
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query, [user.email, confirmation])
+                row = cursor.fetchone()
+                if row is None:
+                    return None
+                else:
+                    if row[0]==1:
+                        query = "UPDATE teacher SET password = ?, confirm_code = ?, confirmed=?"
+                        cursor.execute(query, [password,"",True])
+                        return True
+        except Exception:
+            traceback.print_exc()
+            return False
+
