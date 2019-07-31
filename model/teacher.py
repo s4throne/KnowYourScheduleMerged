@@ -4,7 +4,6 @@ class Teacher(object):
         self.__first_name = None
         self.__last_name = None
         self.__email = None
-        self.__password = None
 
     @property
     def teacher_id(self):
@@ -37,11 +36,3 @@ class Teacher(object):
     @email.setter
     def email(self, email):
         self.__email = email
-
-    @property
-    def password(self):
-        return self.__password
-
-    @email.setter
-    def password(self, password):
-        self.__password = password

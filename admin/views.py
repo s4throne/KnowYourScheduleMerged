@@ -1,9 +1,15 @@
+import traceback
+
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 
 # Create your views here.
+from model.teacher import Teacher
+from repo.user_repo import UserRepo
+from service.account_service import AccountService
+from utils import generate_uuid, timestamp
 
 
 def index(request):
@@ -27,3 +33,30 @@ def adminEdit(request):
 def adminAdd(request):
     adminAddView = loader.get_template('../UI/AddViewer.html')
     return HttpResponse(adminAddView.render())
+
+def adminAddSubmit(request):
+    adminAddView = loader.get_template('../UI/AddViewer.html')
+    context = {}
+    if request.method == 'GET':
+        fname = request.GET["txtName"]
+        email = request.GET["txtEmail"]
+        user = Teacher()
+        user.first_name = fname
+        user.last_name = "whatever"
+        user.email = email
+        confirmation = generate_uuid()
+        time = timestamp()
+        context["user"] = user
+        if not fname:
+            context["error_msg"] = "Name field required"
+        elif not email:
+            context["error_msg"] = "Email field required"
+        else:
+            try:
+                use_repo = UserRepo()
+                if use_repo.save(user, confirmation, time):
+                    context["success_msg"] = "Teacher Added"
+            except Exception:
+                traceback.print_exc()
+                context["error_msg"] = "Something went wrong"
+    return HttpResponse(adminAddView.render(context, request))

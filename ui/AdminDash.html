@@ -14,6 +14,7 @@
 
 <body>
     <div id="wrapper">
+        {{ context.login_user.first_name }}
         {% include "navbar.html" %}
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
@@ -57,7 +58,7 @@
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
     <script src="../../../static/Dashboard/assets/js/jquery.min.js?h=1dd785e1de9a32e236b624ae268bb803"></script>
     <script src="../../../static/Dashboard/assets/bootstrap/js/bootstrap.min.js?h=63715b63ee49d5fe4844c2ecae071373"></script>
-    <script src="../../../static/Dashboard/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="../../../static/Dashboard/assets/js/theme.js?h=6d33b44a6dcb451ae1ea7efc7b5c5e30"></script>
 </body>
 

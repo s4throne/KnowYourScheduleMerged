@@ -1,3 +1,4 @@
+from model import user_register
 from repo.user_repo import UserRepo
 from service.service import Service
 from utils import generate_uuid, timestamp, password_hash, password_verify
@@ -13,8 +14,7 @@ class AccountService(Service):
             if user_detail is None:
                 return None
             else:
-                print(password,user_detail["password"], sep=" ")
-                if password_verify(password , user_detail["password"]):
+                if password_verify(password, user_detail["password"]):
                     return user_detail["teacher"]
                 else:
                     return None
@@ -22,7 +22,7 @@ class AccountService(Service):
             traceback.print_exc()
             return None
 
-    def signup(self, user_register):
+    def signup(self, teacher):
         user = user_register.user
         password = user_register.password
         user.user_id = generate_uuid()
