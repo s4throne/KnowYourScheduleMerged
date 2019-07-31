@@ -6,7 +6,7 @@ from django.db import connection
 class SubjectRepo(object):
 
     def fetch_subjects(self):
-        query = "SELECT subject_id, subject_name FROM subject ORDER BY subject_id"
+        query = "SELECT faculty, subject_name FROM subject ORDER BY subject_id"
         try:
             with connection.cursor() as cursor:
                 cursor.execute(query)
@@ -16,7 +16,7 @@ class SubjectRepo(object):
                 else:
                     subjects = list()
                     for row in rows:
-                        subject = {"name": row[1], "id": row[0]}
+                        subject = {"name": row[1], "faculty": row[0]}
                         subjects.append(subject)
                 return subjects
         except Exception as e:

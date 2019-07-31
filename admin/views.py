@@ -7,6 +7,7 @@ from django.template import loader
 
 # Create your views here.
 from model.teacher import Teacher
+from repo.subject_repo import SubjectRepo
 from repo.user_repo import UserRepo
 from service.account_service import AccountService
 from utils import generate_uuid, timestamp
@@ -27,7 +28,19 @@ def admin(request):
 
 def adminEdit(request):
     adminEditor = loader.get_template('../UI/addschedule.html')
-    return HttpResponse(adminEditor.render())
+    context={}
+    subjectRepo =SubjectRepo()
+    context["subjects"] = subjectRepo.fetch_subjects()
+    return HttpResponse(adminEditor.render(context,request))
+
+def adminSchedule(request):
+    adminScheduler = loader.get_template("../UI/addSchedule.html")
+    context={}
+    faculty = request.POST["faculty"]
+    subject = request.POST["subject"]
+    day = request.POST["day"]
+    classno = request.POST["classno"]
+    time = request.POST["time"]
 
 
 def adminAdd(request):

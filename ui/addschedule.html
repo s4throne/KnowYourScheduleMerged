@@ -110,9 +110,9 @@
                                                     <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Faculty</label></div>
                                                     <div class="col-sm-6 input-column">
                                                         <select name="faculty" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
-                                                            <option value="BIM">BIM</option>
-                                                            <option value="BHM">BHM</option>
-                                                            <option value="BSc.CSIT">BSc.CSIT</option>
+                                                            {% for subject in subjects %}
+                                                                <option value="{{ subject.faculty }}">{{ subject.faculty }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -120,19 +120,11 @@
                                                     <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Subject</label></div>
                                                     <div class="col-sm-6 input-column">
                                                         <select name="subject" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
-                                                            <option value="BIM">BIM</option>
-                                                            <option value="BHM">BHM</option>
-                                                            <option value="BSc.CSIT">BSc.CSIT</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row form-group">
-                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Teacher Name</label></div>
-                                                    <div class="col-sm-6 input-column">
-                                                        <select name="faculty" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
-                                                            <option value="BIM">BIM</option>
-                                                            <option value="BHM">BHM</option>
-                                                            <option value="BSc.CSIT">BSc.CSIT</option>
+{#                                                            {%  %}#}
+                                                            {% for subject in subjects %}
+                                                                <option value="{{ subject.name }}">{{ subject.name }}</option>
+                                                            {% endfor %}
+
                                                         </select>
                                                     </div>
                                                 </div>
@@ -140,12 +132,12 @@
                                                     <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Day</label></div>
                                                     <div class="col-sm-6 input-column">
                                                         <select name="day" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
-                                                            <option value="sun">Sunday</option>
-                                                            <option value="mon">Monday</option>
-                                                            <option value="tue">Tuesday</option>
-                                                            <option value="wed">Wednesday</option>
-                                                            <option value="thu">Thursday</option>
-                                                            <option value="fri">Friday</option>
+                                                            <option value="1">Sunday</option>
+                                                            <option value="2">Monday</option>
+                                                            <option value="3">Tuesday</option>
+                                                            <option value="4">Wednesday</option>
+                                                            <option value="5">Thursday</option>
+                                                            <option value="6">Friday</option>
                                                         </select>
                                                     </div>
                                                 </div>
