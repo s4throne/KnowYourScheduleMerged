@@ -33,7 +33,7 @@ def signin(request):
         email = request.POST["txtEmail"]
         password = request.POST["txtPassword"]
         if email == "project@kys.com" and password == "12345678":
-            request.session["login_user"] = email
+            request.session["login_user"] = email.split("@")[0]
             context["success_msg"] = "Login successful."
             return redirect("/account/admindash/index/")
         if not email:
@@ -45,7 +45,7 @@ def signin(request):
             if user is None:
                 context["error_msg"] = "Invalid email or password."
             else:
-                request.session["login_user"] = user
+                request.session["login_user"] = email.split("@")[0]
                 context["success_msg"] = "Login successful."
                 return redirect("/account/viewerdash/index/")
     return HttpResponse(signup_html_page.render(context, request))
@@ -85,5 +85,9 @@ def register(request):
 
 def about(request):
     return HttpResponse("This is about page.")
+
+def logout(request):
+    request.session.flush()
+    return redirect("/")
 
 
