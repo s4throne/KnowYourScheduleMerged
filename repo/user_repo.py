@@ -4,29 +4,10 @@ import traceback
 from model.teacher import Teacher
 from model.user import User
 
-
-def checkAdmin(email):
-    query = "SELECT username, password FROM admin WHERE username = %s"
-    try:
-        with connection.cursor() as cursor:
-            cursor.execute(query, [email])
-            row = cursor.fetchone()
-            if row is None:
-                return None
-            else:
-                return {"user": row[0], "password": row[1], "role": "admin"}
-    except Exception:
-        traceback.print_exc()
-        return None
-
-
 class UserRepo(object):
 
 
     def signin(self, email):
-        user = checkAdmin(email)
-        if user != None:
-            return user
         query = "SELECT teacher_id, first_name, email, password FROM teacher WHERE email = %s"
         try:
             with connection.cursor() as cursor:
@@ -39,7 +20,7 @@ class UserRepo(object):
                     teacher.teacher_id = row[0]
                     teacher.first_name = row[1]
                     teacher.email = row[2]
-                    return {"user": teacher, "password": row[3], "role": "teacher"}
+                    return {"user": teacher, "password": row[3]}
         except Exception:
             traceback.print_exc()
             return None
@@ -55,18 +36,18 @@ class UserRepo(object):
             return False
 
     def register(self, email, confirmation, password):
-        query = "SELECT confirm_code FROM teacher WHERE email= %s "
+        query = "SELECT COUNT(*) FROM teacher WHERE email= %s AND confirm_code = %s"
         try:
             with connection.cursor() as cursor:
-                print(email, confirmation)
-                cursor.execute(query, [email])
+                cursor.execute(query, [email, confirmation])
                 row = cursor.fetchone()
+
                 if row is None:
                     return False
                 else:
-                    if row[0] == confirmation:
-                        query = "UPDATE teacher SET password = %s, confirm_code = %s, confirmed=True WHERE email=%s"
-                        cursor.execute(query, [password,"",email])
+                    if row[0] == 1:
+                        query = "UPDATE teacher SET password = %s, confirm_code = %s, confirmed=%s WHERE email=%s"
+                        cursor.execute(query, [password,"",True,email])
                         return True
                     else:
                         return False
