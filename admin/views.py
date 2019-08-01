@@ -1,5 +1,6 @@
 import datetime
 import traceback
+from distutils.command.config import config
 from time import time
 
 from django.shortcuts import render
@@ -69,6 +70,8 @@ def adminSchedule(request):
     schedule.subject_id=subjectRepo.get_subjectid(faculty, subject)[0]
     if schedule.subject_id is None:
         context["error_msg"] = "Subject didn't matched the faculty"
+    elif not schedule.class_no:
+        context["error_msg"] = "Please enter the class no"
     else:
         created_at= timestamp()
         scheduleRepo = ScheduleRepo()
@@ -81,19 +84,19 @@ def adminSchedule(request):
 
 def adminAdd(request):
     adminAddView = loader.get_template('../UI/AddViewer.html')
-    return HttpResponse(adminAddView.render())
+    context = {}
+    return HttpResponse(adminAddView.render(context, request))
 
 def adminAddSubmit(request):
     adminAddView = loader.get_template('../UI/AddViewer.html')
     context = {}
-    if request.method == 'GET':
-        fname = request.GET["txtName"]
-
+    if request.method == 'POST':
+        fname = request.POST["txtName"]
         fullname = fname.split(" ")
         if len(fullname)!=2:
             context["error_msg"] = "Full Name Required"
             return HttpResponse(adminAddView.render(context, request))
-        email = request.GET["txtEmail"]
+        email = request.POST["txtEmail"]
         user = Teacher()
         user.first_name = fullname[0]
         user.last_name = fullname[1]

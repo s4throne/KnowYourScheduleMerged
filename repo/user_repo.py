@@ -36,18 +36,18 @@ class UserRepo(object):
             return False
 
     def register(self, email, confirmation, password):
-        query = "SELECT confirm_code FROM teacher WHERE email= %s "
+        query = "SELECT COUNT(*) FROM teacher WHERE email= %s AND confirm_code = %s"
         try:
             with connection.cursor() as cursor:
-                print(email, confirmation)
-                cursor.execute(query, [email])
+                cursor.execute(query, [email, confirmation])
                 row = cursor.fetchone()
+
                 if row is None:
                     return False
                 else:
-                    if row[0] == confirmation:
-                        query = "UPDATE teacher SET password = %s, confirm_code = %s, confirmed=True WHERE email=%s"
-                        cursor.execute(query, [password,"",email])
+                    if row[0] == 1:
+                        query = "UPDATE teacher SET password = %s, confirm_code = %s, confirmed=%s WHERE email=%s"
+                        cursor.execute(query, [password,"",True,email])
                         return True
                     else:
                         return False
