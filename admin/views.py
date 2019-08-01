@@ -117,3 +117,14 @@ def adminAddSubmit(request):
                 traceback.print_exc()
                 context["error_msg"] = "Something went wrong"
     return HttpResponse(adminAddView.render(context, request))
+
+def adminTable(request):
+    signup_html_page = loader.get_template('../UI/AdminDash.html')
+    context = {}
+    if request.method == 'POST':
+        day = request.POST["Days"]
+        print(day)
+        scheduleRepo = ScheduleRepo()
+        table = scheduleRepo.fetchScheduleAll(day)
+        print(table)
+    return HttpResponse(signup_html_page.render(context, request))
