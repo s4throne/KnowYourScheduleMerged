@@ -139,7 +139,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr style="color: rgb(0,0,0);">
-                                                <th style="color: rgb(0,0,0);">Class No./Time</th>
+                                                <th style="color: rgb(0,0,0);">Teacher/Time</th>
                                                 <th>11:00-12:00</th>
                                                 <th>12:00-1:00</th>
                                                 <th>1:00-2:00</th>
@@ -148,14 +148,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for row in table %}
+
                                             <tr style="color: rgb(0,0,0);">
-                                                <td>BIM 101</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 1</td>
+                                                <td>{{ row.teacher_name }}</td>
+                                                <td>{{ row.time1 }}</td>
+                                                <td>{{ row.time2 }}</td>
+                                                <td>{{ row.time3 }}</td>
+                                                <td>{{ row.time4 }}</td>
+                                                <td>{{ row.time5 }}</td>
                                             </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

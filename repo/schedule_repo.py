@@ -29,8 +29,20 @@ class ScheduleRepo(object):
             traceback.print_exc()
             return None
 
+    def getId(self, email):
+        query = "SELECT teacher_id FROM teacher WHERE email = %s"
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query, [email])
+                row = cursor.fetchone()
+                print(row[0])
+                return row[0]
+        except Exception as e:
+            traceback.print_exc()
+            return None
+
     def fetchScheduleAll(self, day):
-        query = "SELECT teacher_id FROM teacher"
+        query = "SELECT teacher_id, first_name FROM teacher"
         try:
             with connection.cursor() as cursor:
                 cursor.execute(query)
@@ -41,26 +53,41 @@ class ScheduleRepo(object):
                     table = list()
                     for row in rows:
                         tabRow = TabRow()
-                        tabRow.teacher_name = self.getTeacher(row[0])
-                        query = "SELECT subject_name, class_no, start_time FROM subject s INNER JOIN schedule sc ON s.subject_id=sc.subject_id WHERE teacher_id=%i"
-                        cursor.execute(query, [row[0]])
-                        lis = cursor.fetchall()
-                        if lis is None:
-                            return None
-                        else:
-                            for li in lis:
-                                if li[2] == "11:00":
-                                    tabRow.time1 = (li[0], li[1])
-                                elif li[2] == "12:00":
-                                    tabRow.time2 = (li[0], li[1])
-                                elif li[2] == "01:00":
-                                    tabRow.time3 = (li[0], li[1])
-                                elif li[2] == "02:30":
-                                    tabRow.time4 = (li[0], li[1])
-                                elif li[2] == "3:30":
-                                    tabRow.time5 = (li[0], li[1])
+                        tabRow.teacher_name = row[1]
+                        row = self.fetchSchedule(row[0],day)
+                        tabRow.time1 = row.time1
+                        tabRow.time2 = row.time2
+                        tabRow.time3 = row.time3
+                        tabRow.time4 = row.time4
+                        tabRow.time5 = row.time5
                         table.append(tabRow)
                     return table
         except Exception as e:
             traceback.print_exc()
-            return False
+            return None
+
+    def fetchSchedule(self, teacher_id, day_no):
+        query = "SELECT sch.class_no, sub.subject_name, sch.start_time FROM schedule sch INNER  JOIN subject sub ON sch.subject_id = sub.subject_id WHERE sub.teacher_id = %s AND sch.day_no = %s"
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query,[teacher_id, day_no])
+                rows = cursor.fetchall()
+                if rows is None:
+                    return None
+                else:
+                    tab_row = TabRow()
+                    for row in rows:
+                        if row[2] == "11:00":
+                            tab_row.time1 = (row[0]+" "+row[1])
+                        elif row[2] == "12:00":
+                            tab_row.time2 = (row[0]+" "+row[1])
+                        elif row[2] == "01:00":
+                            tab_row.time3 = (row[0]+" "+row[1])
+                        elif row[2] == "02:30":
+                            tab_row.time4 = (row[0]+" "+row[1])
+                        elif row[2] == "3:30":
+                            tab_row.time5 = (row[0]+" "+row[1])
+                return tab_row
+        except Exception as e:
+            traceback.print_exc()
+            return None

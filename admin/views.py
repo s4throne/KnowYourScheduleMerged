@@ -137,6 +137,5 @@ def adminTable(request):
         day = request.POST["Days"]
         print(day)
         scheduleRepo = ScheduleRepo()
-        table = scheduleRepo.fetchScheduleAll(day)
-        print(table)
+        context["table"] = scheduleRepo.fetchScheduleAll(day)
     return HttpResponse(signup_html_page.render(context, request))
