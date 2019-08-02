@@ -23,6 +23,8 @@ def index(request):
     context = {}
     if "login_user" in request.session:
         context["login_user"] = request.session["login_user"]
+    else:
+        return redirect("/")
     return HttpResponse(index_html_page.render(context, request))
 
 
@@ -32,6 +34,8 @@ def admin(request):
 
 
 def adminEdit(request):
+    if "login_user" not in request.session:
+        return redirect("/")
     adminEditor = loader.get_template('../UI/addschedule.html')
     context={}
     subjectRepo =SubjectRepo()
@@ -39,6 +43,8 @@ def adminEdit(request):
     return HttpResponse(adminEditor.render(context,request))
 
 def adminSchedule(request):
+    if "login_user" not in request.session:
+        return redirect("/")
     adminScheduler = loader.get_template("../UI/addSchedule.html")
     context={}
     faculty = request.POST["faculty"]
@@ -83,11 +89,15 @@ def adminSchedule(request):
 
 
 def adminAdd(request):
+    if "login_user" not in request.session:
+        return redirect("/")
     adminAddView = loader.get_template('../UI/AddViewer.html')
     context = {}
     return HttpResponse(adminAddView.render(context, request))
 
 def adminAddSubmit(request):
+    if "login_user" not in request.session:
+        return redirect("/")
     adminAddView = loader.get_template('../UI/AddViewer.html')
     context = {}
     if request.method == 'POST':
@@ -117,3 +127,15 @@ def adminAddSubmit(request):
                 traceback.print_exc()
                 context["error_msg"] = "Something went wrong"
     return HttpResponse(adminAddView.render(context, request))
+
+def adminTable(request):
+    if "login_user" not in request.session:
+        return redirect("/")
+    signup_html_page = loader.get_template('../UI/AdminDash.html')
+    context = {}
+    if request.method == 'POST':
+        day = request.POST["Days"]
+        print(day)
+        scheduleRepo = ScheduleRepo()
+        context["table"] = scheduleRepo.fetchScheduleAll(day)
+    return HttpResponse(signup_html_page.render(context, request))

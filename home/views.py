@@ -45,7 +45,7 @@ def signin(request):
             if user is None:
                 context["error_msg"] = "Invalid email or password."
             else:
-                request.session["login_user"] = user
+                request.session["login_user"] = email
                 context["success_msg"] = "Login successful."
                 return redirect("/account/viewerdash/index/")
     return HttpResponse(signup_html_page.render(context, request))
@@ -85,5 +85,9 @@ def register(request):
 
 def about(request):
     return HttpResponse("This is about page.")
+
+def logout(request):
+    request.session.flush()
+    return redirect("/")
 
 
