@@ -52,7 +52,7 @@ class ForumRepo(object):
         query = "INSERT INTO forum(forum_id, title, tag, body, user_id, created_at, forum_image) VALUES(%s,%s,%s,%s,%s,%s,%s)"
         try:
             with connection.cursor() as cursor:
-                cursor.execute(query, [forum.forum_id, forum.title, forum.tag, forum.body, forum.user.user_id, forum.created_at, forum.forum_image])
+                cursor.execute(query, [forum.forum_id, forum.title, forum.tag, forum.body, forum.user.sender, forum.created_at, forum.forum_image])
                 return True
         except Exception as e:
             traceback.print_exc()
