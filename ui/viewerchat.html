@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="height: 100%">
+<div id="message" style="height: 80%;">
+    {% for message in messages %}
+        {% if message.sender %}
+            <div>{{ login_user }} :: {{ message.content }}</div>
+        {% else %}
+            <div>Coordinator :: {{ message.content }}</div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+<form method="post" action="/account/viewerdash/chat/submit/" style="height: 20%; width: 80%">
+    {% csrf_token %}
+    <input type="text" name="content" style="width: 100%; height: 80%">
+</form>
+</body>
+</html>

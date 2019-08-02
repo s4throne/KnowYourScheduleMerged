@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>AdminDashboard</title>
-    <link rel="stylesheet" href="../../../static/Dashboard/assets/bootstrap/css/bootstrap.min.css?h=d8624c5caca4196c8c94f2e0596a263a">
+    <title>Admin- Add Schedule</title>
+    <link rel="stylesheet" href="../../../static/Dashboard/assets/bootstrap/css/bootstrap.min.css?h=619e4616a89592bb0c141238cc2f1a6b">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="../../../static/Dashboard/assets/fonts/fontawesome-all.min.css?h=0692f36eb27607e4837760bbbf813d92">
     <link rel="stylesheet" href="../../../static/Dashboard/assets/fonts/ionicons.min.css?h=0692f36eb27607e4837760bbbf813d92">
@@ -13,9 +13,8 @@
 </head>
 
 <body>
-
     <div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background-color: rgb(93,24,118);background-image: url('none');">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background-color: rgb(93,24,118);background-image: url('none');">
             <div class="container-fluid d-flex flex-column p-0">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/account/admindash/index/">
                     <div class="sidebar-brand-icon rotate-n-15"></div><img class="KYSlogo" src="../../../static/Dashboard/assets/img/KYSLogo.png?h=a66ec06786222b4dc5dd0052c3870aa4">
@@ -23,15 +22,15 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/account/admindash/index/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link active" href="/account/admindash/addviewer/"><i class="icon ion-person-add"></i><span>Add Viewer</span></a><a class="nav-link"
-                            href="/account/admindash/editschedule/"><i class="far fa-calendar-minus"></i><span>Add Schedule</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/account/admindash/index/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="/account/admindash/addviewer/"><i class="icon ion-person-add"></i><span>Add Viewer</span></a><a class="nav-link active"
+                                                                                                                                                                                                                                                                                 href="/account/admindash/editschedule/"><i class="far fa-calendar-minus"></i><span>Add Schedule</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
@@ -96,7 +95,7 @@
             </nav>
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0" style="color: rgb(0,0,0);font-weight: bold; font-size: 40px">Add Viewer</h3>
+                    <h3 class="text-dark mb-0" style="font-size: 40px;"><strong>Add Schedule</strong></h3>
                 </div>
                 <div class="row">
                     <div class="col">
@@ -105,7 +104,7 @@
                                 <div>
                                     <div class="row register-form">
                                         <div class="col-md-8 offset-md-2">
-                                            <form class="custom-form" method="post" action="/account/admindash/addviewersubmit/">
+                                            <form class="custom-form" method="post" action="/account/admindash/addschedule/">
                                                 {% csrf_token %}
                                                 {% if error_msg %}
                                                     <div class="alert alert-danger">{{ error_msg }}</div>
@@ -114,12 +113,55 @@
                                                     <div class="alert alert-success">{{ success_msg }}</div>
                                                 {% endif %}
                                                 <div class="form-row form-group">
-                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Name </label></div>
-                                                    <div class="col-sm-6 input-column"><input class="form-control" type="text" name="txtName"></div>
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Faculty</label></div>
+                                                    <div class="col-sm-6 input-column">
+                                                        <select name="faculty" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
+                                                            {% for subject in subjects %}
+                                                                <option value="{{ subject.faculty }}">{{ subject.faculty }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="form-row form-group">
-                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Email </label></div>
-                                                    <div class="col-sm-6 input-column"><input class="form-control" type="email" name="txtEmail"></div>
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Subject</label></div>
+                                                    <div class="col-sm-6 input-column">
+                                                        <select name="subject" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
+{#                                                            {%  %}#}
+                                                            {% for subject in subjects %}
+                                                                <option value="{{ subject.name }}">{{ subject.name }}</option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row form-group">
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Day</label></div>
+                                                    <div class="col-sm-6 input-column">
+                                                        <select name="day" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
+                                                            <option value="1">Sunday</option>
+                                                            <option value="2">Monday</option>
+                                                            <option value="3">Tuesday</option>
+                                                            <option value="4">Wednesday</option>
+                                                            <option value="5">Thursday</option>
+                                                            <option value="6">Friday</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row form-group">
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Class Number</label></div>
+                                                    <div class="col-sm-6 input-column"><input class="form-control" name="classno" type="text" style="width: 200px;"></div>
+                                                </div>
+                                                <div class="form-row form-group">
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Start Time</label></div>
+                                                    <div class="col-sm-6 input-column">
+                                                        <select name="fulltime" class="dropdown btn btn-primary" style="background-color: rgb(93,24,118);width: 200px;">
+                                                            <option value="11">11:00 to 12:00</option>
+                                                            <option value="12">12:00 to 01:00</option>
+                                                            <option value="1">01:00 to 02:00</option>
+                                                            <option value="2.5">02:30 to 03:30</option>
+                                                            <option value="3.5">03:30 to 04:30</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="subit-button"><input class="btn btn-light submit-button border" type="submit" value="Submit"></div>
                                             </form>
